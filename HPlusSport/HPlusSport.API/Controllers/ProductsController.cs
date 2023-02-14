@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace HPlusSport.API.Controllers
 {
@@ -31,10 +32,22 @@ namespace HPlusSport.API.Controllers
         //    return Ok(_context.Products.ToArray());
         //}
 
+        //[HttpGet]
+        //public async Task<ActionResult> GetAllProductsAsync()
+        //{
+        //    return Ok(await _context.Products.ToArrayAsync());
+        //}
+
         [HttpGet]
-        public async Task<ActionResult> GetAllProductsAsync()
+        public async Task<ActionResult> GetAllProductsAsync([FromQuery]QueryParameters queryParameters)
         {
-            return Ok(await _context.Products.ToArrayAsync());
+            IQueryable<Product> products = _context.Products;
+
+            products = products
+                .Skip(queryParameters.Size * (queryParameters.Page - 1))
+                .Take(queryParameters.Size);
+
+            return Ok(await products.ToArrayAsync());
         }
 
         //[HttpGet("{id}")]
