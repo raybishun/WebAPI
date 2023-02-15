@@ -57,11 +57,38 @@ namespace HPlusSport.API.Controllers
             Usage 1: https://localhost:7218/api/products?maxPrice=50
             Usage 2: https://localhost:7218/api/products?maxPrice=50&minPrice=20
          */
+        //[HttpGet]
+        //public async Task<ActionResult> GetAllProductsAsync([FromQuery] ProductQueryParameters queryParameters)
+        //{
+        //    IQueryable<Product> products = _context.Products;
+
+        //    if (queryParameters.MinPrice != null)
+        //    {
+        //        products = products.Where(
+        //            p => p.Price >= queryParameters.MinPrice.Value);
+        //    }
+
+        //    if (queryParameters.MaxPrice != null)
+        //    {
+        //        products = products.Where(
+        //            p => p.Price <= queryParameters.MaxPrice.Value);
+        //    }
+
+        //    products = products
+        //        .Skip(queryParameters.Size * (queryParameters.Page - 1))
+        //        .Take(queryParameters.Size);
+
+        //    return Ok(await products.ToArrayAsync());
+        //}
+
+
+
         [HttpGet]
         public async Task<ActionResult> GetAllProductsAsync([FromQuery] ProductQueryParameters queryParameters)
         {
             IQueryable<Product> products = _context.Products;
 
+            // Filtering
             if (queryParameters.MinPrice != null)
             {
                 products = products.Where(
@@ -74,12 +101,30 @@ namespace HPlusSport.API.Controllers
                     p => p.Price <= queryParameters.MaxPrice.Value);
             }
 
+
+            // Search
+            // Usage 1: https://localhost:7218/api/products?maxPrice=50&minPrice=20&sku=AWMPS
+            // Usage 2: https://localhost:7218/api/products?name=jeans
+            if (!string.IsNullOrEmpty(queryParameters.Sku))
+            {
+                products = products.Where(
+                    p => p.Sku == queryParameters.Sku);
+            }
+
+            if (!string.IsNullOrEmpty(queryParameters.Name))
+            {
+                products = products.Where(
+                    p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
+            }
+
+            // Pagination
             products = products
                 .Skip(queryParameters.Size * (queryParameters.Page - 1))
                 .Take(queryParameters.Size);
 
             return Ok(await products.ToArrayAsync());
         }
+
 
 
         //[HttpGet("{id}")]
