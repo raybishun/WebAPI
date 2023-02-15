@@ -38,6 +38,8 @@ namespace HPlusSport.API.Controllers
         //    return Ok(await _context.Products.ToArrayAsync());
         //}
 
+
+        // Example: 5 on a page, starting at page 1: https://localhost:7218/api/products?size=5&page=1
         [HttpGet]
         public async Task<ActionResult> GetAllProductsAsync([FromQuery]QueryParameters queryParameters)
         {
