@@ -39,11 +39,40 @@ namespace HPlusSport.API.Controllers
         //}
 
 
-        // Example: 5 on a page, starting at page 1: https://localhost:7218/api/products?size=5&page=1
+        // Usage: 5 on a page, starting at page 1: https://localhost:7218/api/products?size=5&page=1
+        //[HttpGet]
+        //public async Task<ActionResult> GetAllProductsAsync([FromQuery]QueryParameters queryParameters)
+        //{
+        //    IQueryable<Product> products = _context.Products;
+
+        //    products = products
+        //        .Skip(queryParameters.Size * (queryParameters.Page - 1))
+        //        .Take(queryParameters.Size);
+
+        //    return Ok(await products.ToArrayAsync());
+        //}
+
+
+        /*
+            Usage 1: https://localhost:7218/api/products?maxPrice=50
+            Usage 2: https://localhost:7218/api/products?maxPrice=50&minPrice=20
+         */
         [HttpGet]
-        public async Task<ActionResult> GetAllProductsAsync([FromQuery]QueryParameters queryParameters)
+        public async Task<ActionResult> GetAllProductsAsync([FromQuery] ProductQueryParameters queryParameters)
         {
             IQueryable<Product> products = _context.Products;
+
+            if (queryParameters.MinPrice != null)
+            {
+                products = products.Where(
+                    p => p.Price >= queryParameters.MinPrice.Value);
+            }
+
+            if (queryParameters.MaxPrice != null)
+            {
+                products = products.Where(
+                    p => p.Price <= queryParameters.MaxPrice.Value);
+            }
 
             products = products
                 .Skip(queryParameters.Size * (queryParameters.Page - 1))
@@ -51,6 +80,7 @@ namespace HPlusSport.API.Controllers
 
             return Ok(await products.ToArrayAsync());
         }
+
 
         //[HttpGet("{id}")]
         //public ActionResult GetProduct(int id) 
@@ -143,7 +173,7 @@ namespace HPlusSport.API.Controllers
         }
 
         [HttpPost]
-        [Route("Delete")] // Example: https://localhost:7218/api/products/delete?ids=1&ids=2&ids=3&ids=33
+        [Route("Delete")] // Usage: https://localhost:7218/api/products/delete?ids=1&ids=2&ids=3&ids=33
         public async Task<ActionResult> DeleteProducts([FromQuery]int[] ids)
         {
             var products = new List<Product>();
