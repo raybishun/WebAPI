@@ -182,8 +182,6 @@ namespace HPlusSport.API.Controllers
         //}
 
 
-        // Advanced Search
-        // Usage: 
         [HttpGet]
         public async Task<ActionResult> GetAllProductsAsync([FromQuery] ProductQueryParameters queryParameters)
         {
@@ -209,7 +207,7 @@ namespace HPlusSport.API.Controllers
             {
                 products = products.Where(
                     p => p.Sku.ToLower().Contains(queryParameters.SearchTerm.ToLower()) ||
-                        p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
+                        p.Name.ToLower().Contains(queryParameters.SearchTerm.ToLower()));
             }
 
             // Search
