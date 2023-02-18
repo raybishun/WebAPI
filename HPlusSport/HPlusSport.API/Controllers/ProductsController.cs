@@ -7,8 +7,10 @@ using System.Linq;
 namespace HPlusSport.API.Controllers
 {
     [ApiVersion("1.0")]
-    //[Route("api/[controller]")]
-    [Route("v{v:apiVersion}/products")] // Usage: https://localhost:7218/v1.0/products
+    // [Route("api/[controller]")]
+    // [Route("v{v:apiVersion}/products")] // Usage: https://localhost:7218/v1.0/products
+    [Route("products")]  // <-- For use by Header Versioning
+        // Usage: In the client's Header, add: KEY: X-API-Version, VALUE: 2.0
     [ApiController]
     public class ProductsV1Controller : ControllerBase
     {
@@ -371,9 +373,11 @@ namespace HPlusSport.API.Controllers
     
     
     [ApiVersion("2.0")]
-    //[Route("api/[controller]")]
+    // [Route("api/[controller]")]
+    // [Route("v{v:apiVersion}/products")] // Usage: https://localhost:7218/v2.0/products
+    [Route("products")] // <-- For use by Header Versioning 
+        // Usage: In the client's Header, add: KEY: X-API-Version, VALUE: 2.0
     [ApiController]
-    [Route("v{v:apiVersion}/products")] // Usage: https://localhost:7218/v2.0/products
     public class ProductsV2Controller : ControllerBase
     {
         private readonly ShopContext _context;
