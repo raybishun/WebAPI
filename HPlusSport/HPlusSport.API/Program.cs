@@ -20,8 +20,13 @@ builder.Services.AddApiVersioning(options => {
     options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
     options.AssumeDefaultVersionWhenUnspecified= true;
 
-    // Used by Header Versioning
-    options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+    // Used by Header Versioning (*** Comment out to implement Query String Versioning ***)
+    // Usage: https://localhost:7218/products?api-version=2.0
+    // options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+
+    // In addition to commenting out the above line, to implement Query String Versioning, you could:
+    options.ApiVersionReader = new QueryStringApiVersionReader("hps-api-version");
+    // Usage: https://localhost:7218/products?hps-api-version=2.0
 });
 
 
