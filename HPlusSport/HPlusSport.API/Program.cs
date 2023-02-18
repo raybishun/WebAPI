@@ -31,6 +31,14 @@ builder.Services.AddApiVersioning(options => {
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// *** To remediate "ERROR: Fetch errorresponse status is 500 https://localhost:7218/swagger/v1/swagger.json"
+builder.Services.AddVersionedApiExplorer(options => 
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

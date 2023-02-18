@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "VCooiUj/pHF/1uwPif13jJcwBZt7IUu5KBkZaXPYyQ7Nl4QAHBqsk7E4XlmyxkjqLOjOICLtewO+iPEdl8afiw==",
+  "dgSpecHash": "iig+GaBw49CPSa/fn/GjdnmCFeQMpbXQwnoUbFVrmT62w95ESgh14qYauZNcT31gUZrEEE16uJOSXquqyNdF0Q==",
   "success": true,
   "projectFilePath": "C:\\Data\\Dropbox\\Data\\IT\\Git_Public\\WebAPI\\HPlusSport\\HPlusSport.API\\HPlusSport.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ray\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
+    "C:\\Users\\Ray\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning.apiexplorer\\5.0.0\\microsoft.aspnetcore.mvc.versioning.apiexplorer.5.0.0.nupkg.sha512",
     "C:\\Users\\Ray\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.2\\microsoft.entityframeworkcore.7.0.2.nupkg.sha512",
     "C:\\Users\\Ray\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.2\\microsoft.entityframeworkcore.abstractions.7.0.2.nupkg.sha512",
     "C:\\Users\\Ray\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.2\\microsoft.entityframeworkcore.analyzers.7.0.2.nupkg.sha512",
