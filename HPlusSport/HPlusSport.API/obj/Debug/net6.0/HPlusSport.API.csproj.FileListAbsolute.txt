@@ -84,3 +84,4 @@ C:\Data\Dropbox\Data\IT\Git_Public\WebAPI\HPlusSport\HPlusSport.API\obj\Debug\ne
 C:\Data\Dropbox\Data\IT\Git_Public\WebAPI\HPlusSport\HPlusSport.API\obj\Debug\net6.0\HPlusSport.API.pdb
 C:\Data\Dropbox\Data\IT\Git_Public\WebAPI\HPlusSport\HPlusSport.API\obj\Debug\net6.0\HPlusSport.API.genruntimeconfig.cache
 C:\Data\Dropbox\Data\IT\Git_Public\WebAPI\HPlusSport\HPlusSport.API\obj\Debug\net6.0\ref\HPlusSport.API.dll
+C:\Data\Dropbox\Data\IT\Git_Public\WebAPI\HPlusSport\HPlusSport.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Versioning.dll
