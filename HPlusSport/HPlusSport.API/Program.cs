@@ -55,7 +55,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{ 
+    // Use HTTP Strict Transport Security,
+    // to force the client to use HTTPS (for the next 30 days.)
+    app.UseHsts();
+}
 
+// Redirects HTTP requests to HTTPS (status code 307, a temporary redirect).
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
