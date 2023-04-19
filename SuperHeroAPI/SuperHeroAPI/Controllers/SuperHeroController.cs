@@ -70,7 +70,19 @@ namespace SuperHeroAPI.Controllers
             return Ok(heroes);
         }
 
-        
+        [HttpDelete]
+        public async Task<ActionResult<List<SuperHero>>> Delete(int id)
+        {
+            var hero = heroes.Find(h => h.Id == id);
 
+            if (hero == null)
+            {
+                return BadRequest("Hero is a zero");
+            }
+
+            heroes.Remove(hero);
+
+            return Ok(heroes);
+        }
     }
 }
