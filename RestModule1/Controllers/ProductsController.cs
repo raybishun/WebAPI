@@ -1,7 +1,5 @@
 ﻿using RestModule1.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -19,10 +17,20 @@ namespace RestModule1.Controllers
 
         // GET: api/Product
         // public IEnumerable<string> Get()
-        public IEnumerable<Product> Get()
+        // public IEnumerable<Product> Get()
+        // public HttpResponseMessage Get()
+        public IHttpActionResult Get()
         {
             // return new string[] { "value1", "value2" };
-            return products;
+            // return products;
+
+            // return BadRequest(); // HTTP 404
+            // return NotFound();
+
+            // return new HttpResponseMessage(HttpStatusCode.Created); // HTTP 201
+            // return new HttpResponseMessage(HttpStatusCode.OK);
+
+            return Ok(products); // HTTP 200
         }
 
         // GET: api/Product/5
@@ -35,9 +43,11 @@ namespace RestModule1.Controllers
 
         // POST: api/Product
         // public void Post([FromBody]string value)
-        public void Post([FromBody] Product product)
+        // public void Post([FromBody] Product product)
+        public HttpResponseMessage Post([FromBody]Product product)
         {
             products.Add(product);
+            return new HttpResponseMessage(HttpStatusCode.Created);
 
             /*
              Test with Postman: 
