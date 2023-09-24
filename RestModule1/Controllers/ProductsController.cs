@@ -72,9 +72,15 @@ namespace RestModule1.Controllers
         // public void Put(int id, [FromBody]string value)
 
         [HttpPut] // Custom Method
-        public void Put(int id, [FromBody] Product product)
+        // public void Put(int id, [FromBody] Product product)
+        // public void Put(int id, [FromUri] Product product)
+        public void Put([FromBody]int id, [FromUri] Product product)
         {
             products[id] = product;
+
+            // When passed using [FromUri]: http://localhost:57551/api/products?id=1&ProductName=NokiaPhone&Price=300
+
+            // When passed using the [FromBody]int id, [FromUri]: http://localhost:57551/api/products?ProductName=MotorollaPhone&Price=200
 
             /*
             Test with Postman: 
@@ -93,7 +99,7 @@ namespace RestModule1.Controllers
 
         // DELETE: api/Product/5
         // public void Delete(int id)
-        
+
         [HttpDelete] // Custom Method
         public void Delete(int id)
         {
