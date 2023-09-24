@@ -19,6 +19,8 @@ namespace RestModule1.Controllers
         // public IEnumerable<string> Get()
         // public IEnumerable<Product> Get()
         // public HttpResponseMessage Get()
+
+        // [HttpGet] // Custom Method
         public IHttpActionResult Get()
         {
             // return new string[] { "value1", "value2" };
@@ -44,6 +46,8 @@ namespace RestModule1.Controllers
         // POST: api/Product
         // public void Post([FromBody]string value)
         // public void Post([FromBody] Product product)
+        
+        [HttpPost] // Custom Method
         public HttpResponseMessage Post([FromBody]Product product)
         {
             products.Add(product);
@@ -66,6 +70,8 @@ namespace RestModule1.Controllers
 
         // PUT: api/Product/5
         // public void Put(int id, [FromBody]string value)
+
+        [HttpPut] // Custom Method
         public void Put(int id, [FromBody] Product product)
         {
             products[id] = product;
@@ -87,6 +93,8 @@ namespace RestModule1.Controllers
 
         // DELETE: api/Product/5
         // public void Delete(int id)
+        
+        [HttpDelete] // Custom Method
         public void Delete(int id)
         {
             products.RemoveAt(id);
