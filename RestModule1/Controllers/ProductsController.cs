@@ -1,117 +1,115 @@
-﻿using RestModule1.Models;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
+using RestModule1.Models;
 
 namespace RestModule1.Controllers
 {
     public class ProductsController : ApiController
     {
-        static List<Product> products = new List<Product>()
-        { 
-            new Product(){ Id = 0, ProductName = "Apple", Price = 20},
-            new Product(){ Id = 1, ProductName = "Banana", Price = 40},
-            new Product(){ Id = 2, ProductName = "Orange", Price = 60}
-        };
+        private ProductsAppContext db = new ProductsAppContext();
 
-        // GET: api/Product
-        // public IEnumerable<string> Get()
-        // public IEnumerable<Product> Get()
-        // public HttpResponseMessage Get()
-
-        // [HttpGet] // Custom Method
-        public IHttpActionResult Get()
+        // GET: api/Products
+        public IQueryable<Product> GetProducts()
         {
-            // return new string[] { "value1", "value2" };
-            // return products;
-
-            // return BadRequest(); // HTTP 404
-            // return NotFound();
-
-            // return new HttpResponseMessage(HttpStatusCode.Created); // HTTP 201
-            // return new HttpResponseMessage(HttpStatusCode.OK);
-
-            return Ok(products); // HTTP 200
+            return db.Products;
         }
 
-        // GET: api/Product/5
-        // public string Get(int id)
-        public Product Get(int id)
+        // GET: api/Products/5
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> GetProduct(int id)
         {
-            // return "value";
-            return products[id];
+            Product product = await db.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
         }
 
-        // POST: api/Product
-        // public void Post([FromBody]string value)
-        // public void Post([FromBody] Product product)
-        
-        [HttpPost] // Custom Method
-        public HttpResponseMessage Post([FromBody]Product product)
+        // PUT: api/Products/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutProduct(int id, Product product)
         {
-            products.Add(product);
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            /*
-             Test with Postman: 
-            --> URL: http://localhost:57551/api/products
-            --> POST 
-            --> Body --> Raw --> JSON (application/json)
+            if (id != product.Id)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(product).State = EntityState.Modified;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
                 {
-                    "Id": 3,
-                    "ProductName": "Mango",
-                    "Price": 80
+                    return NotFound();
                 }
-            --> Send
-            --> GET: http://localhost:57551/api/products
-            */
-        }
-
-        // PUT: api/Product/5
-        // public void Put(int id, [FromBody]string value)
-
-        [HttpPut] // Custom Method
-        // public void Put(int id, [FromBody] Product product)
-        // public void Put(int id, [FromUri] Product product)
-        public void Put([FromBody]int id, [FromUri] Product product)
-        {
-            products[id] = product;
-
-            // When passed using [FromUri]: http://localhost:57551/api/products?id=1&ProductName=NokiaPhone&Price=300
-
-            // When passed using the [FromBody]int id, [FromUri]: http://localhost:57551/api/products?ProductName=MotorollaPhone&Price=200
-
-            /*
-            Test with Postman: 
-            --> URL: http://localhost:57551/api/products/3
-            --> PUT
-            --> Body --> Raw --> JSON (application/json)
+                else
                 {
-                    "Id": 3,
-                    "ProductName": "Tomato",
-                    "Price": 90
+                    throw;
                 }
-            --> Send
-            --> GET: http://localhost:57551/api/products
-            */
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // DELETE: api/Product/5
-        // public void Delete(int id)
-
-        [HttpDelete] // Custom Method
-        public void Delete(int id)
+        // POST: api/Products
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> PostProduct(Product product)
         {
-            products.RemoveAt(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            /*
-            Test with Postman: 
-            --> URL: http://localhost:57551/api/products/3
-            --> DELETE
-            --> Send
-            --> GET: http://localhost:57551/api/products
-            */
+            db.Products.Add(product);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
+        }
+
+        // DELETE: api/Products/5
+        [ResponseType(typeof(Product))]
+        public async Task<IHttpActionResult> DeleteProduct(int id)
+        {
+            Product product = await db.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            db.Products.Remove(product);
+            await db.SaveChangesAsync();
+
+            return Ok(product);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private bool ProductExists(int id)
+        {
+            return db.Products.Count(e => e.Id == id) > 0;
         }
     }
 }
