@@ -80,6 +80,9 @@ namespace RestModule1.Controllers
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
+
+            // A 'Location' key value pair is returned in the Header
+            // i.e.: http://localhost:57551/api/Products/3
         }
 
         // DELETE: api/Products/5
