@@ -65,6 +65,18 @@ namespace RestModule1.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+
+            /* PUT: http://localhost:57551/api/Products/3
+             * 
+             * Body
+             * {
+                    "Id": 3,
+                    "ProductName": "Orange",
+                    "Price": 20
+                }
+
+            GET: http://localhost:57551/api/Products/3
+            */
         }
 
         // POST: api/Products
@@ -99,6 +111,9 @@ namespace RestModule1.Controllers
             await db.SaveChangesAsync();
 
             return Ok(product);
+
+            // DELETE: http://localhost:57551/api/Products/3
+            // GET: http://localhost:57551/api/Products
         }
 
         protected override void Dispose(bool disposing)
