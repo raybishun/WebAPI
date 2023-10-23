@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -40,6 +36,16 @@ namespace RestProductsAPIDemo.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutProductsTable(int id, ProductsTable productsTable)
         {
+            /*PUT: http://localhost:51238/api/Products/1
+             *     {
+                    "Id": 1,
+                    "ProductName": "Donut",
+                    "Price": 20
+                }
+
+            GET: http://localhost:51238/api/Products/1
+             */
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -68,6 +74,7 @@ namespace RestProductsAPIDemo.Controllers
                 }
             }
 
+            // Return 204 - Request successfully processed and response intentionally blank.
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -75,6 +82,14 @@ namespace RestProductsAPIDemo.Controllers
         [ResponseType(typeof(ProductsTable))]
         public async Task<IHttpActionResult> PostProductsTable(ProductsTable productsTable)
         {
+            /* 
+             * {
+                "ID": 6,
+                "ProductName": "Burger",
+                "Price": 20
+            }
+             */
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
