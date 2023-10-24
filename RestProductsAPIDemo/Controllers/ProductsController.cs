@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -14,9 +15,27 @@ namespace RestProductsAPIDemo.Controllers
         private ProductsDBEntities db = new ProductsDBEntities();
 
         // GET: api/Products
-        public IQueryable<ProductsTable> GetProductsTables()
+        public IQueryable<ProductsTable> GetProductsTables(string sortPrice)
         {
-            return db.ProductsTables;
+            /*
+             * http://localhost:51238/api/Products?sortPrice=desc
+             */
+
+            IQueryable<ProductsTable> products;
+            switch (sortPrice)
+            {
+                case "desc":
+                    products = db.ProductsTables.OrderByDescending(p => p.Price);
+                    break;
+                case "asc":
+                    products = db.ProductsTables.OrderBy(p => p.Price);
+                    break;
+                default:
+                    products = db.ProductsTables;
+                    break;
+            }
+            // return db.ProductsTables;
+            return products;
         }
 
         // GET: api/Products/5
@@ -105,6 +124,15 @@ namespace RestProductsAPIDemo.Controllers
         [ResponseType(typeof(ProductsTable))]
         public async Task<IHttpActionResult> DeleteProductsTable(int id)
         {
+            /*DELETE: http://localhost:51238/api/Products/1
+             *     {
+                    "Id": 1,
+                    "ProductName": "Donut",
+                    "Price": 20
+                }
+            GET: http://localhost:51238/api/Products/1 (returns, 404 Not Found)
+             */
+
             ProductsTable productsTable = await db.ProductsTables.FindAsync(id);
             if (productsTable == null)
             {
