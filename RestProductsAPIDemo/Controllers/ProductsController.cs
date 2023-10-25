@@ -14,29 +14,50 @@ namespace RestProductsAPIDemo.Controllers
     {
         private ProductsDBEntities db = new ProductsDBEntities();
 
-        // GET: api/Products
-        public IQueryable<ProductsTable> GetProductsTables(string sortPrice)
-        {
-            /*
-             * http://localhost:51238/api/Products?sortPrice=desc
-             */
+        /*First page: http://localhost:51238/api/Products?pageNumber=1&pageSize=3
+         * Second page: http://localhost:51238/api/Products?pageNumber=2&pageSize=3
+         * If NULL: http://localhost:51238/api/Products?pageNumber=&pageSize
+         */
 
-            IQueryable<ProductsTable> products;
-            switch (sortPrice)
-            {
-                case "desc":
-                    products = db.ProductsTables.OrderByDescending(p => p.Price);
-                    break;
-                case "asc":
-                    products = db.ProductsTables.OrderBy(p => p.Price);
-                    break;
-                default:
-                    products = db.ProductsTables;
-                    break;
-            }
-            // return db.ProductsTables;
-            return products;
+        // GET: api/Products
+        public IQueryable<ProductsTable> GetProductsTables(int? pageNumber, int? pageSize)
+        {
+            var products = (from p in db.ProductsTables.
+                            OrderBy(a => a.ID)
+                            select p).AsQueryable();
+
+            int currentPage = pageNumber ?? 1;
+            int currentPageSize = pageSize ?? 5;
+            
+            var items = products.Skip((currentPage - 1) * currentPageSize).Take(currentPageSize).ToList();
+           
+           return items.AsQueryable();
+           
         }
+
+        //// GET: api/Products
+        //public IQueryable<ProductsTable> GetProductsTables(string sortPrice)
+        //{
+        //    /*
+        //     * http://localhost:51238/api/Products?sortPrice=desc
+        //     */
+
+        //    IQueryable<ProductsTable> products;
+        //    switch (sortPrice)
+        //    {
+        //        case "desc":
+        //            products = db.ProductsTables.OrderByDescending(p => p.Price);
+        //            break;
+        //        case "asc":
+        //            products = db.ProductsTables.OrderBy(p => p.Price);
+        //            break;
+        //        default:
+        //            products = db.ProductsTables;
+        //            break;
+        //    }
+        //    // return db.ProductsTables;
+        //    return products;
+        //}
 
         // GET: api/Products/5
         [ResponseType(typeof(ProductsTable))]
@@ -55,7 +76,7 @@ namespace RestProductsAPIDemo.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutProductsTable(int id, ProductsTable productsTable)
         {
-            /*PUT: http://localhost:51238/api/Products/1
+            /*http://localhost:51238/api/Products/1
              *     {
                     "Id": 1,
                     "ProductName": "Donut",
