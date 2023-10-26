@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -14,26 +15,43 @@ namespace RestProductsAPIDemo.Controllers
     {
         private ProductsDBEntities db = new ProductsDBEntities();
 
-        /*First page: http://localhost:51238/api/Products?pageNumber=1&pageSize=3
-         * Second page: http://localhost:51238/api/Products?pageNumber=2&pageSize=3
-         * If NULL: http://localhost:51238/api/Products?pageNumber=&pageSize
-         */
+
 
         // GET: api/Products
-        public IQueryable<ProductsTable> GetProductsTables(int? pageNumber, int? pageSize)
+        public List<ProductsTable> GetProductsTables(string searchProduct)
         {
-            var products = (from p in db.ProductsTables.
-                            OrderBy(a => a.ID)
-                            select p).AsQueryable();
+            /*http://localhost:51238/api/Products?searchProduct=C
+             */
 
-            int currentPage = pageNumber ?? 1;
-            int currentPageSize = pageSize ?? 5;
-            
-            var items = products.Skip((currentPage - 1) * currentPageSize).Take(currentPageSize).ToList();
-           
-           return items.AsQueryable();
-           
+            var products = db.ProductsTables.Where(p => p.ProductName.StartsWith(searchProduct));
+
+            return products.ToList();
         }
+
+
+
+        //// GET: api/Products
+        //public IQueryable<ProductsTable> GetProductsTables(int? pageNumber, int? pageSize)
+        //{
+        //    /*First page: http://localhost:51238/api/Products?pageNumber=1&pageSize=3
+        //     * Second page: http://localhost:51238/api/Products?pageNumber=2&pageSize=3
+        //     * If NULL: http://localhost:51238/api/Products?pageNumber=&pageSize
+        //     */
+
+        //    var products = (from p in db.ProductsTables.
+        //                    OrderBy(a => a.ID)
+        //                    select p).AsQueryable();
+
+        //    int currentPage = pageNumber ?? 1;
+        //    int currentPageSize = pageSize ?? 5;
+
+        //    var items = products.Skip((currentPage - 1) * currentPageSize).Take(currentPageSize).ToList();
+
+        //   return items.AsQueryable();
+
+        //}
+
+
 
         //// GET: api/Products
         //public IQueryable<ProductsTable> GetProductsTables(string sortPrice)
@@ -58,6 +76,8 @@ namespace RestProductsAPIDemo.Controllers
         //    // return db.ProductsTables;
         //    return products;
         //}
+
+
 
         // GET: api/Products/5
         [ResponseType(typeof(ProductsTable))]
