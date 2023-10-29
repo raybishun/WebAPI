@@ -1,3 +1,4 @@
+using RestProductsAPIDemo.MessageHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace RestProductsAPIDemo
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            GlobalConfiguration.Configuration.MessageHandlers.Add(new ApiKeyMessageHandler());
         }
     }
 }
