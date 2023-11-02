@@ -29,5 +29,7 @@ namespace WebApiOAuth2.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<WebApiOAuth2.Models.Notes> Notes { get; set; }
     }
 }
